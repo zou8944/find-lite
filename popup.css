@@ -79,12 +79,12 @@
     color: rgb(120 131 137) !important;
 }
 
-#find-lite-switcher-container button.selected {
+#find-lite-switcher-container button.active {
     background-color: rgb(215 215 215);
     color: rgb(54 167 216) !important;
 }
 
-#find-lite-switcher-container button.disable {
+#find-lite-switcher-container button:disabled {
     background-color: rgb(255 255 255);
     color: rgb(222 222 222) !important;
 }

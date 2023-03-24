@@ -2,10 +2,6 @@ let ranges = [];
 let currentIndex = 0;
 let totalCount = 0;
 
-let isCaseSensitive = false;
-let isWholeWord = false;
-let isRegex = false;
-
 (function () {
     registerAction();
 })();
@@ -37,12 +33,12 @@ async function onKeydown(event) {
             searchBox.classList.remove("hide");
             searchBox.classList.add("show");
             document.getElementById("find-lite-search-field").focus();
+            return;
         }
-        return;
     }
     // ESC 清空并隐藏搜索框
     if (event.keyCode === 27) {
-        clearStatus();
+        await onExitClicked(event);
         return;
     }
     // Enter 下一个
@@ -60,7 +56,7 @@ async function onSearchInputChanged(event) {
     // 获取输入事件的文本，遍历整个dom，查找相关的内容
     const inputText = event.target.value;
     if (!inputText || inputText === "") {
-        clearIndexText();
+        clearStatus();
         return;
     }
 
@@ -94,7 +90,7 @@ async function onSearchInputChanged(event) {
 
     CSS.highlights.set("search-results", new Highlight(...ranges));
 
-    refreshIndexText();
+    refreshIndexText(false);
 
     if (totalCount > 0) {
         enableNaviButton();
@@ -104,41 +100,40 @@ async function onSearchInputChanged(event) {
 }
 
 async function onCaseSensitiveClicked(event) {
-    isCaseSensitive = event.target.checked;
+    event.target.classList.toggle("active");
 }
 
 async function onWholeWordClicked(event) {
-    isWholeWord = event.target.checked;
+    event.target.classList.toggle("active");
 }
 
 async function onRegexClicked(event) {
-    isRegex = event.target.checked;
+    const regexButton = event.target;
+    regexButton.classList.toggle("active");
+    // 正则和全词匹配互斥
+    if (regexButton.classList.contains("active")) {
+        document.getElementById("find-lite-whole-word").disabled = true;
+        document.getElementById("find-lite-whole-word").classList.remove("active");
+    } else {
+        document.getElementById("find-lite-whole-word").disabled = false;
+    }
 }
 
 async function onPrevClicked(event) {
-    console.log(currentIndex, totalCount);
-    if (currentIndex === 0) {
-        currentIndex = totalCount - 1;
-    } else {
-        currentIndex--;
-    }
+    currentIndex = (currentIndex - 1 + totalCount) % totalCount;
     CSS.highlights.set("search-results-focus", new Highlight(ranges[currentIndex]));
-    refreshIndexText();
+    refreshIndexText(true);
 }
 
 async function onNextClicked(event) {
-    console.log(currentIndex, totalCount);
-    if (currentIndex === totalCount - 1) {
-        currentIndex = 0;
-    } else {
-        currentIndex++;
-    }
+    currentIndex = (currentIndex + 1) % totalCount;
     CSS.highlights.set("search-results-focus", new Highlight(ranges[currentIndex]));
-    refreshIndexText();
+    refreshIndexText(true);
 }
 
 async function onExitClicked(event) {
     clearStatus();
+    hideSearchBox();
 }
 
 
@@ -149,10 +144,19 @@ function clearStatus() {
     totalCount = 0;
     document.getElementById("find-lite-index-text").innerText = "";
     document.getElementById("find-lite-search-field").value = "";
+    disableNaviButton();
+}
+
+function hideSearchBox() {
     const searchBox = document.getElementById("find-lite-container");
     searchBox.classList.remove("show");
     searchBox.classList.add("hide");
-    disableNaviButton();
+}
+
+function showSearchBox() {
+    const searchBox = document.getElementById("find-lite-container");
+    searchBox.classList.remove("hide");
+    searchBox.classList.add("show");
 }
 
 function disableNaviButton() {
@@ -165,10 +169,19 @@ function enableNaviButton() {
     document.getElementById("find-lite-next").disabled = false;
 }
 
-function refreshIndexText() {
-    document.getElementById("find-lite-index-text").innerText = `${currentIndex + 1} / ${totalCount}`;
+function refreshIndexText(isInNavigate = false) {
+    const displayCount = isInNavigate ? currentIndex + 1 : 0;
+    document.getElementById("find-lite-index-text").innerText = `${displayCount} / ${totalCount}`;
 }
 
-function clearIndexText() {
-    document.getElementById("find-lite-index-text").innerText = "";
+function isCaseSensitive() {
+    return document.getElementById("find-lite-case-sensitive").classList.contains("active");
+}
+
+function isWholeWord() {
+    return document.getElementById("find-lite-whole-word").classList.contains("active");
+}
+
+function isRegex() {
+    return document.getElementById("find-lite-regex").classList.contains("active");
 }
