@@ -1,0 +1,158 @@
+#find-lite-container {
+    position: fixed;
+    top: -100px;
+    right: 20px;
+    padding: 10px 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    z-index: 999999;
+
+    transition: all 0.2s ease-in-out;
+}
+
+#find-lite-container.show {
+    top: 5px;
+}
+
+#find-lite-container.hide {
+    top: -100px;
+}
+
+#find-lite-search-field-container {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: rgb(84 88 93);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#find-lite-search-field-container #find-lite-search-field {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+#find-lite-search-field-container #find-lite-search-info {
+    min-width: 3rem;
+    max-width: 6rem;
+    text-align: center;
+    margin: 0 5px;
+    cursor: default;
+}
+
+#find-lite-switcher-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: default;
+    margin: 0 2px;
+    padding: 0 2px;
+    border-left: solid 1px rgb(222 222 222);
+    border-right: solid 1px rgb(222 222 222);
+}
+
+#find-lite-switcher-container button {
+    border: none !important; /* 取消边框 */
+    border-radius: 5px;
+    margin: 0 1px; /* 取消外边距 */
+    padding: 0; /* 取消内边距 */
+    width: 25px; /* 设置按钮宽度 */
+    height: 25px; /* 设置按钮高度 */
+    outline: none; /* 去掉聚焦时的轮廓线 */
+    -webkit-appearance: none; /* 防止浏览器样式的干扰 */
+    -moz-appearance: none;
+    appearance: none;
+    font-weight: bold;
+
+    background-color: rgb(255 255 255);
+    color: rgb(178 184 187) !important;
+}
+
+#find-lite-switcher-container button:hover {
+    background-color: rgb(215 215 215);
+    color: rgb(120 131 137) !important;
+}
+
+#find-lite-switcher-container button.selected {
+    background-color: rgb(215 215 215);
+    color: rgb(54 167 216) !important;
+}
+
+#find-lite-switcher-container button.disable {
+    background-color: rgb(255 255 255);
+    color: rgb(222 222 222) !important;
+}
+
+#find-lite-search-control-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#find-lite-search-control-container button {
+    border: none !important; /* 取消边框 */
+    border-radius: 50%;
+    margin: 0 1px; /* 取消外边距 */
+    padding: 0; /* 取消内边距 */
+    width: 25px; /* 设置按钮宽度 */
+    height: 25px; /* 设置按钮高度 */
+    outline: none; /* 去掉聚焦时的轮廓线 */
+    -webkit-appearance: none; /* 防止浏览器样式的干扰 */
+    -moz-appearance: none;
+    appearance: none;
+
+    background-color: rgb(255 255 255);
+}
+
+#find-lite-search-control-container button {
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    background-position: center center;
+}
+
+#find-lite-search-control-container button:hover {
+    background-color: rgb(231 231 231);
+}
+
+#find-lite-search-control-container button:disabled {
+    background-color: white;
+}
+
+#find-lite-search-control-container #find-lite-previous:disabled {
+    background-size: 40% 40%;
+    background-image: url("icons/up-disable.png");
+}
+
+#find-lite-search-control-container #find-lite-previous:enabled {
+    background-size: 40% 40%;
+    background-image: url("icons/up-enable.png");
+}
+
+#find-lite-search-control-container #find-lite-next:disabled {
+    background-size: 40% 40%;
+    background-image: url("icons/down-disable.png");
+}
+
+#find-lite-search-control-container #find-lite-next:enabled {
+    background-size: 40% 40%;
+    background-image: url("icons/down-enable.png");
+}
+
+#find-lite-search-control-container #find-lite-exit {
+    background-size: 40% 40%;
+    background-image: url("icons/exit.png");
+}
+
+::highlight(search-results) {
+    background-color: rgb(255 255 11);
+}
+
+::highlight(search-results-focus) {
+    background-color: rgb(253 131 39);
+}
