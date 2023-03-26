@@ -29,7 +29,7 @@ async function onKeydown(event) {
     // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
     if (event.ctrlKey || event.metaKey) {
         if (event.shiftKey && event.key === 'f') {
-            showSearchBox();
+            await showSearchBox();
         }
     }
     // ESC 清空并隐藏搜索框
@@ -222,11 +222,17 @@ function hideSearchBox() {
     searchBox.classList.add("hide");
 }
 
-function showSearchBox() {
+async function showSearchBox() {
     const searchBox = document.getElementById("find-lite-container");
     searchBox.classList.remove("hide");
     searchBox.classList.add("show");
+    // 输入框填充当前选中的文本
+    // TODO 由于集中焦点后原来的选择会丢失，因此需要将选中的设置为搜索结果的初始index，以达到迷惑的目的
+    const selectedText = window.getSelection().toString();
     document.getElementById("find-lite-search-field").focus();
+    document.getElementById("find-lite-search-field").value = selectedText;
+    document.getElementById("find-lite-search-field").select();
+    await onSearchInputChanged(null);
 }
 
 function disableNaviButton() {
@@ -276,6 +282,9 @@ function renderCurrentRange() {
 }
 
 function scrollToRange(range) {
+    if (!range) {
+        return;
+    }
     // 如果range已经在视窗内，则不需要滚动
     const rect = range.getBoundingClientRect();
     if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
