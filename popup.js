@@ -60,13 +60,7 @@ async function onSearchInputChanged(event) {
         return;
     }
 
-    const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const allTextNodes = [];
-    let currentNode = treeWalker.nextNode();
-    while (currentNode) {
-        allTextNodes.push(currentNode);
-        currentNode = treeWalker.nextNode();
-    }
+    const allTextNodes = findAllVisibleTextNode();
 
     CSS.highlights.clear();
     ranges = allTextNodes.map((node) => {
@@ -134,6 +128,50 @@ async function onNextClicked(event) {
 async function onExitClicked(event) {
     clearStatus();
     hideSearchBox();
+}
+
+function findAllVisibleTextNode() {
+    const textNodes = [];
+    findVisibleTextNode(document.body, textNodes);
+    return textNodes;
+}
+
+// 深度优先遍历：保证得到的文本节点和显示的顺序一致
+function findVisibleTextNode(node, textNodes) {
+    if (isNodeDisplayed(node)) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+            // 如果是元素节点, 递归
+            if (node.childNodes[i].nodeType === Node.ELEMENT_NODE) {
+                findVisibleTextNode(node.childNodes[i], textNodes);
+            }
+            // 如果是文本节点, 加入结果
+            if (node.childNodes[i].nodeType === Node.TEXT_NODE) {
+                // 排除空白文本节点
+                if (node.childNodes[i].textContent.trim() !== "") {
+                    textNodes.push(node.childNodes[i]);
+                }
+            }
+        }
+    }
+}
+
+// 节点显示检查器，从根节点扫描有效，不可判断一个节点的多级父节点是否可见
+function isNodeDisplayed(node) {
+    // 非element节点直接判定为可见
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+        return true;
+    }
+    // 特殊元素本身就不可见
+    if (node.tagName === "SCRIPT" || node.tagName === "STYLE") {
+        return false;
+    }
+    // 本插件的元素不可见
+    if (node.classList.contains("find-lite-container")) {
+        return false;
+    }
+    // 根据元素可见性判断
+    const style = window.getComputedStyle(node);
+    return !(style.display === "none" || style.visibility === "hidden");
 }
 
 
