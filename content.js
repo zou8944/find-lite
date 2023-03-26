@@ -2,7 +2,47 @@ let ranges = [];
 let currentIndex = 0;
 let totalCount = 0;
 
-(function () {
+function replaceURL(rawCSS, relativeURL) {
+    return rawCSS.replace(relativeURL, chrome.runtime.getURL(relativeURL));
+}
+
+(async function () {
+    // 插入css：由于css文件中有用到图片，所以需要用到chrome.runtime.getURL对他们进行替换
+    let rawCSS = await fetch(chrome.runtime.getURL("content.css")).then(response => response.text());
+    rawCSS = replaceURL(rawCSS, "icons/up-disable.png");
+    rawCSS = replaceURL(rawCSS, "icons/up-enable.png");
+    rawCSS = replaceURL(rawCSS, "icons/down-disable.png");
+    rawCSS = replaceURL(rawCSS, "icons/down-enable.png");
+    rawCSS = replaceURL(rawCSS, "icons/exit.png");
+    const style = document.createElement("style");
+    style.innerHTML = rawCSS;
+    document.head.appendChild(style);
+
+    // 插入html
+    const rawHTML = `
+        <div id="find-lite-container" class="find-lite-container">
+            <div id="find-lite-search-field-container">
+                <input id="find-lite-search-field" type="text" name="search" title="Search Field" size="30"/>
+                <div id="find-lite-search-info">
+                    <span id="find-lite-index-text"></span>
+                </div>
+            </div>
+            <div id="find-lite-switcher-container">
+                <button id="find-lite-case-sensitive" title="Case Sensitive">Cc</button>
+                <button id="find-lite-whole-word" title="Whole Word">W</button>
+                <button id="find-lite-regex" title="Regular Expression">.*</button>
+            </div>
+            <div id="find-lite-search-control-container">
+                <button id="find-lite-previous" title="Previous"></button>
+                <button id="find-lite-next" title="Next"></button>
+                <button id="find-lite-exit" title="Exit"></button>
+            </div>
+        </div>`;
+    const html = document.createElement("div");
+    html.innerHTML = rawHTML;
+    document.body.appendChild(html.children[0]);
+    console.log("Hello from Find Lite!");
+
     registerAction();
 })();
 

@@ -1,11 +1,33 @@
 {
   "manifest_version": 3,
-  "name": "Find Pro",
-  "description": "Find Pro is a simple extension that allows you to search for text on the current page.",
+  "name": "Find Lite",
+  "description": "Find Lite is a simple extension that allows you to search for text on the current page.",
   "version": "1.0.0",
-  "browser_action": {
-    "default_popup": "popup.html",
-    "default_title": "Find Pro"
-  },
-  "permissions": ["activeTab"]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content.css",
+        "icons/exit.png",
+        "icons/up-enable.png",
+        "icons/up-disable.png",
+        "icons/down-enable.png",
+        "icons/down-disable.png"
+      ],
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
 }
