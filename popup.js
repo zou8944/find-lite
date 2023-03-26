@@ -29,10 +29,7 @@ async function onKeydown(event) {
     // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
     if (event.ctrlKey || event.metaKey) {
         if (event.shiftKey && event.key === 'f') {
-            const searchBox = document.getElementById("find-lite-container");
-            searchBox.classList.remove("hide");
-            searchBox.classList.add("show");
-            document.getElementById("find-lite-search-field").focus();
+            showSearchBox();
             return;
         }
     }
@@ -81,14 +78,12 @@ async function onRegexClicked(event) {
 
 async function onPrevClicked(event) {
     currentIndex = (currentIndex - 1 + totalCount) % totalCount;
-    CSS.highlights.set("search-results-focus", new Highlight(ranges[currentIndex]));
-    refreshIndexText(true);
+    renderCurrentRange();
 }
 
 async function onNextClicked(event) {
     currentIndex = (currentIndex + 1) % totalCount;
-    CSS.highlights.set("search-results-focus", new Highlight(ranges[currentIndex]));
-    refreshIndexText(true);
+    renderCurrentRange();
 }
 
 async function onExitClicked(event) {
@@ -110,7 +105,9 @@ function searchAndHighlight() {
     CSS.highlights.set("search-results", new Highlight(...ranges));
 
     totalCount = ranges.length;
-    refreshIndexText(false);
+    currentIndex = determineInitialRangeIndex(ranges);
+
+    renderCurrentRange();
 
     if (totalCount > 0) {
         enableNaviButton();
@@ -232,6 +229,7 @@ function showSearchBox() {
     const searchBox = document.getElementById("find-lite-container");
     searchBox.classList.remove("hide");
     searchBox.classList.add("show");
+    document.getElementById("find-lite-search-field").focus();
 }
 
 function disableNaviButton() {
@@ -244,9 +242,63 @@ function enableNaviButton() {
     document.getElementById("find-lite-next").disabled = false;
 }
 
-function refreshIndexText(isInNavigate = false) {
-    const displayCount = isInNavigate ? currentIndex + 1 : 0;
+function determineInitialRangeIndex(ranges) {
+    let initialIndex = -1;
+    for (let i = 0; i < ranges.length; i++) {
+        const range = ranges[i];
+        const rect = range.getBoundingClientRect();
+        // 只对视窗内的 range 进行处理：优先上半窗，否则下半窗第一个
+        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+            if (initialIndex === -1) {
+                initialIndex = i;
+                continue;
+            }
+            if (rect.top > window.innerHeight / 2) {
+                break;
+            }
+            if (rect.top > ranges[initialIndex].getBoundingClientRect().top) {
+                initialIndex = i;
+            }
+        }
+        if (rect.top > window.innerHeight) {
+            break;
+        }
+    }
+    // 如果没有在视窗内的，则默认选中第一个
+    if (initialIndex === -1) {
+        initialIndex = 0;
+    }
+    return initialIndex;
+}
+
+function renderCurrentRange() {
+    scrollToRange(ranges[currentIndex]);
+    const displayCount = currentIndex + 1;
     document.getElementById("find-lite-index-text").innerText = `${displayCount} / ${totalCount}`;
+    CSS.highlights.set("search-results-focus", new Highlight(ranges[currentIndex]));
+}
+
+function scrollToRange(range) {
+    // 如果range已经在视窗内，则不需要滚动
+    const rect = range.getBoundingClientRect();
+    if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+        return;
+    }
+    // 如果range的下半部分在视窗内，则整个range滚动到视窗
+    if (rect.top < 0 && rect.bottom > 0) {
+        const yOffset = rect.top;
+        window.scrollBy(0, yOffset - 2);
+        return;
+    }
+    // 如果range的上半部分在视窗内，则整个range滚动到视窗
+    if (rect.top < window.innerHeight && rect.bottom > window.innerHeight) {
+        const yOffset = rect.bottom - window.innerHeight;
+        window.scrollBy(0, yOffset + 2);
+        return;
+    }
+    // 否则，滚动到视窗的中心
+    const yOffset = -window.innerHeight / 2 + rect.top + rect.height / 2;
+    window.scrollBy(0, yOffset);
 }
 
 function isCaseSensitive() {
