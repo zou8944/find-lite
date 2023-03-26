@@ -53,52 +53,17 @@ async function onKeydown(event) {
 }
 
 async function onSearchInputChanged(event) {
-    // 获取输入事件的文本，遍历整个dom，查找相关的内容
-    const inputText = event.target.value;
-    if (!inputText || inputText === "") {
-        clearStatus();
-        return;
-    }
-
-    const allTextNodes = findAllVisibleTextNode();
-
-    CSS.highlights.clear();
-    ranges = allTextNodes.map((node) => {
-        const indices = [];
-        const text = node.textContent;
-        let startPos = 0;
-        while (startPos < text.length) {
-            const index = text.indexOf(inputText, startPos);
-            if (index === -1) break;
-            indices.push(index);
-            startPos = index + inputText.length;
-        }
-        return indices.map((index) => {
-            const range = new Range();
-            range.setStart(node, index);
-            range.setEnd(node, index + inputText.length);
-            return range;
-        });
-    }).flat();
-    totalCount = ranges.length;
-
-    CSS.highlights.set("search-results", new Highlight(...ranges));
-
-    refreshIndexText(false);
-
-    if (totalCount > 0) {
-        enableNaviButton();
-    } else {
-        disableNaviButton();
-    }
+    searchAndHighlight();
 }
 
 async function onCaseSensitiveClicked(event) {
     event.target.classList.toggle("active");
+    searchAndHighlight();
 }
 
 async function onWholeWordClicked(event) {
     event.target.classList.toggle("active");
+    searchAndHighlight();
 }
 
 async function onRegexClicked(event) {
@@ -111,6 +76,7 @@ async function onRegexClicked(event) {
     } else {
         document.getElementById("find-lite-whole-word").disabled = false;
     }
+    searchAndHighlight();
 }
 
 async function onPrevClicked(event) {
@@ -128,6 +94,29 @@ async function onNextClicked(event) {
 async function onExitClicked(event) {
     clearStatus();
     hideSearchBox();
+}
+
+function searchAndHighlight() {
+    const inputText = document.getElementById("find-lite-search-field").value;
+    if (!inputText || inputText === "") {
+        clearStatus();
+        return;
+    }
+
+    const allTextNodes = findAllVisibleTextNode();
+
+    CSS.highlights.clear();
+    ranges = allTextNodes.map(node => findAllTextInNode(node, inputText)).flat();
+    CSS.highlights.set("search-results", new Highlight(...ranges));
+
+    totalCount = ranges.length;
+    refreshIndexText(false);
+
+    if (totalCount > 0) {
+        enableNaviButton();
+    } else {
+        disableNaviButton();
+    }
 }
 
 function findAllVisibleTextNode() {
@@ -174,6 +163,54 @@ function isNodeDisplayed(node) {
     return !(style.display === "none" || style.visibility === "hidden");
 }
 
+// 查找一个node中符合要求的文本，以range的形式返回
+function findAllTextInNode(node, inputText) {
+    const ranges = [];
+    // 正则匹配模式
+    if (isRegex()) {
+        regexFind(node, ranges, inputText, isCaseSensitive());
+    }
+    // 全词匹配模式
+    else if (isWholeWord()) {
+        regexFind(node, ranges, `\\b${inputText}\\b`, isCaseSensitive());
+    }
+    // 普通模式
+    else {
+        standardFind(node, ranges, inputText, isCaseSensitive());
+    }
+    return ranges;
+}
+
+function standardFind(node, ranges, inputText, isCaseSensitive) {
+    const nodeText = isCaseSensitive ? node.textContent : node.textContent.toLowerCase();
+    const searchText = isCaseSensitive ? inputText : inputText.toLowerCase();
+    let startPos = 0;
+    while (startPos < nodeText.length) {
+        const index = nodeText.indexOf(searchText, startPos);
+        if (index === -1) break;
+        const range = new Range();
+        range.setStart(node, index);
+        range.setEnd(node, index + searchText.length);
+        ranges.push(range);
+        startPos = index + searchText.length;
+    }
+}
+
+function regexFind(node, ranges, regexPatten, isCaseSensitive) {
+    let match;
+    let regex;
+    try {
+        regex = new RegExp(regexPatten, isCaseSensitive ? 'g' : 'gi');
+    } catch (e) {
+        // 正则表达式错误，不进行匹配
+    }
+    while ((match = regex.exec(node.textContent)) !== null) {
+        const range = new Range();
+        range.setStart(node, match.index);
+        range.setEnd(node, match.index + match[0].length);
+        ranges.push(range);
+    }
+}
 
 function clearStatus() {
     CSS.highlights.clear();
