@@ -7,7 +7,7 @@ let totalCount = 0;
 })();
 
 function registerAction() {
-    // 按钮事件
+    // 键盘事件
     document.onkeydown = onKeydown;
     // 搜索框事件 - 输入变化
     document.getElementById("find-lite-search-field").oninput = onSearchInputChanged;
@@ -30,22 +30,19 @@ async function onKeydown(event) {
     if (event.ctrlKey || event.metaKey) {
         if (event.shiftKey && event.key === 'f') {
             showSearchBox();
-            return;
         }
     }
     // ESC 清空并隐藏搜索框
-    if (event.keyCode === 27) {
+    else if (event.keyCode === 27) {
         await onExitClicked(event);
-        return;
-    }
-    // Enter 下一个
-    if (event.keyCode === 13) {
-        await onNextClicked(event);
-        return;
     }
     // Shift+Enter 上一个
-    if (event.shiftKey && event.keyCode === 13) {
+    else if (event.shiftKey && event.keyCode === 13) {
         await onPrevClicked(event);
+    }
+    // Enter 下一个
+    else if (event.keyCode === 13) {
+        await onNextClicked(event);
     }
 }
 
