@@ -1,7 +1,19 @@
 FindLite.page = (function () {
     const self = {};
 
-    self.determineInitialRangeIndex = function (ranges) {
+    self.determineInitialRangeIndex = function (ranges, selectedRange) {
+        // 如果有选中的range则直接高亮
+        if (selectedRange) {
+            for (let i = 0; i < ranges.length; i++) {
+                const isStartSame = ranges[i].compareBoundaryPoints(Range.START_TO_START, selectedRange) === 0;
+                const isEndSame = ranges[i].compareBoundaryPoints(Range.END_TO_END, selectedRange) === 0;
+                const isParentSame = ranges[i].commonAncestorContainer === selectedRange.commonAncestorContainer;
+                if (isStartSame && isEndSame && isParentSame) {
+                    return i;
+                }
+            }
+        }
+
         let initialIndex = -1;
         for (let i = 0; i < ranges.length; i++) {
             const range = ranges[i];

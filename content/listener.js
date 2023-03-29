@@ -60,7 +60,7 @@ FindLite.listener = (function () {
         // 找出body下所有可见元素符合条件的文本
         ranges = FindLite.finder.findInBody(inputText, isCaseSensitive, isWholeWord, isRegex);
         // 根据视窗获取第一个需要focus的搜索结果
-        currentIndex = FindLite.page.determineInitialRangeIndex(ranges);
+        currentIndex = FindLite.page.determineInitialRangeIndex(ranges, selectRange);
         // 根据搜索结果渲染显示内容
         renderHighlight();
 
