@@ -80,21 +80,40 @@ FindLite.panel = {
     updateIndexText: function (index, total) {
         FindLite.panel.element.searchIndexText.innerText = Math.min(index + 1, total) + "/" + total;
     },
+    setSwitcher: function (caseSensitive, wholeWord, regex) {
+        if (caseSensitive) {
+            FindLite.panel.element.caseSensitiveButton.classList.add("active");
+        } else {
+            FindLite.panel.element.caseSensitiveButton.classList.remove("active");
+        }
+        if (wholeWord) {
+            FindLite.panel.element.wholeWordButton.classList.add("active");
+        } else {
+            FindLite.panel.element.wholeWordButton.classList.remove("active");
+        }
+        if (regex) {
+            FindLite.panel.element.regexButton.classList.add("active");
+            FindLite.panel.element.wholeWordButton.disabled = true;
+            FindLite.panel.element.wholeWordButton.classList.remove("active");
+        } else {
+            FindLite.panel.element.regexButton.classList.remove("active");
+            FindLite.panel.element.wholeWordButton.disabled = false;
+        }
+    },
     toggleSensitive: function () {
         FindLite.panel.element.caseSensitiveButton.classList.toggle("active");
     },
     toggleWholeWord: function () {
         FindLite.panel.element.wholeWordButton.classList.toggle("active");
     },
-    disableWholeWord: function () {
-        FindLite.panel.element.wholeWordButton.disabled = true;
-        FindLite.panel.element.wholeWordButton.classList.remove("active");
-    },
-    enableWholeWord: function () {
-        FindLite.panel.element.wholeWordButton.disabled = false;
-    },
     toggleRegex: function () {
         FindLite.panel.element.regexButton.classList.toggle("active");
+        if (FindLite.panel.isRegex()) {
+            FindLite.panel.element.wholeWordButton.disabled = true;
+            FindLite.panel.element.wholeWordButton.classList.remove("active");
+        } else {
+            FindLite.panel.element.wholeWordButton.disabled = false;
+        }
     },
     isCaseSensitive: function () {
         return FindLite.panel.element.caseSensitiveButton.classList.contains("active");

@@ -16,33 +16,38 @@ FindLite.listener = (function () {
         document.onkeydown = self.keydownListener;
     };
 
-    self.keydownListener = function (event) {
+    self.keydownListener = async function (event) {
         // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
         if (event.ctrlKey || event.metaKey) {
             if (event.shiftKey && event.key === 'f') {
-                FindLite.panel.show();
                 selectRange = window.getSelection().getRangeAt(0);
                 if (selectRange) {
                     FindLite.panel.focusAndSelect(selectRange.toString());
                 }
-                self.findInputChangeListener(event);
+                FindLite.panel.setSwitcher(
+                    await FindLite.storage.getSensitive(),
+                    await FindLite.storage.getWholeWord(),
+                    await FindLite.storage.getRegex()
+                );
+                FindLite.panel.show();
+                await self.findInputChangeListener(event);
             }
         }
         // ESC 清空并隐藏搜索框
         else if (event.keyCode === 27) {
-            self.exitClickListener(event);
+            await self.exitClickListener(event);
         }
         // Shift+Enter 上一个
         else if (event.shiftKey && event.keyCode === 13) {
-            self.previousClickListener(event);
+            await self.previousClickListener(event);
         }
         // Enter 下一个
         else if (event.keyCode === 13) {
-            self.nextClickListener(event);
+            await self.nextClickListener(event);
         }
     };
 
-    self.findInputChangeListener = function (event) {
+    self.findInputChangeListener = async function (event) {
         const inputText = FindLite.panel.element.searchField.value;
         if (inputText === "") {
             clearAllState();
@@ -66,38 +71,36 @@ FindLite.listener = (function () {
         }
     };
 
-    self.caseSensitiveClickListener = function (event) {
+    self.caseSensitiveClickListener = async function (event) {
         FindLite.panel.toggleSensitive();
-        self.findInputChangeListener(event);
+        await FindLite.storage.setSensitive(FindLite.panel.isCaseSensitive());
+        await self.findInputChangeListener(event);
     };
 
-    self.wholeWordClickListener = function (event) {
+    self.wholeWordClickListener = async function (event) {
         FindLite.panel.toggleWholeWord();
-        self.findInputChangeListener(event);
+        await FindLite.storage.setWholeWord(FindLite.panel.isWholeWord());
+        await self.findInputChangeListener(event);
     };
 
-    self.regexClickListener = function (event) {
+    self.regexClickListener = async function (event) {
         FindLite.panel.toggleRegex();
-        // 正则和全词匹配互斥
-        if (FindLite.panel.isRegex()) {
-            FindLite.panel.disableWholeWord();
-        } else {
-            FindLite.panel.enableWholeWord();
-        }
-        self.findInputChangeListener(event);
+        await FindLite.storage.setRegex(FindLite.panel.isRegex());
+        await FindLite.storage.setWholeWord(FindLite.panel.isWholeWord());
+        await self.findInputChangeListener(event);
     };
 
-    self.previousClickListener = function (event) {
+    self.previousClickListener = async function (event) {
         currentIndex = (currentIndex - 1 + ranges.length) % ranges.length;
         renderHighlight();
     };
 
-    self.nextClickListener = function (event) {
+    self.nextClickListener = async function (event) {
         currentIndex = (currentIndex + 1) % ranges.length;
         renderHighlight();
     };
 
-    self.exitClickListener = function (event) {
+    self.exitClickListener = async function (event) {
         FindLite.panel.hide();
         clearAllState();
     };

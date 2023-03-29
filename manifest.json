@@ -3,6 +3,9 @@
   "name": "Find Lite",
   "description": "Find Lite is a simple extension that allows you to search for text on the current page.",
   "version": "1.0.0",
+  "permissions": [
+    "storage"
+  ],
   "web_accessible_resources": [
     {
       "resources": [
@@ -31,6 +34,7 @@
         "content/page.js",
         "content/finder.js",
         "content/listener.js",
+        "content/storage.js",
         "content/content.js"
       ]
     }
