@@ -6,7 +6,7 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "content.css",
+        "content/content.css",
         "icons/exit.png",
         "icons/up-enable.png",
         "icons/up-disable.png",
@@ -26,7 +26,12 @@
         "http://*/*"
       ],
       "js": [
-        "content.js"
+        "app.js",
+        "content/panel.js",
+        "content/page.js",
+        "content/finder.js",
+        "content/listener.js",
+        "content/content.js"
       ]
     }
   ]
