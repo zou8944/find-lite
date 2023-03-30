@@ -5,6 +5,8 @@
     padding: 10px 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
+    /* 背景白色，半透明 */
+    background-color: rgba(255, 255, 255, 0.9);
 
     display: flex;
     flex-direction: row;
