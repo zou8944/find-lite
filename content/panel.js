@@ -76,6 +76,9 @@ FindLite.panel = {
         FindLite.panel.element.sidebar.innerHTML = "";
         FindLite.panel.element.sidebar.style.display = "none";
     },
+    clearSidebar: function() {
+        FindLite.panel.element.sidebar.innerHTML = "";
+    },
     focusAndSelect: function (text) {
         FindLite.panel.element.searchField.focus();
         FindLite.panel.element.searchField.value = text;

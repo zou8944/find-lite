@@ -65,6 +65,7 @@ FindLite.listener = (function () {
         renderHighlight();
         // 渲染进度条
         const topPercents = FindLite.page.calVerticalLineTopPercents(ranges);
+        FindLite.panel.clearSidebar();
         FindLite.panel.showSidebar(topPercents);
 
         if (ranges.length > 0) {
