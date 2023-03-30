@@ -42,6 +42,24 @@ FindLite.page = (function () {
         return initialIndex;
     };
 
+    self.calVerticalLineTopPercents = function (ranges) {
+        // 计算整个页面的高度
+        const bodyHeight = document.body.scrollHeight;
+        const topPercents = [];
+        // 遍历ranges，获取每个range相对body顶部的距离，去重加入tops
+        const bodyRect = document.body.getBoundingClientRect();
+        const bodyTop = bodyRect.top;
+        for (let range of ranges) {
+            const rect = range.getBoundingClientRect();
+            const top = rect.top - bodyTop;
+            const topPercent = Math.round(top / bodyHeight * 100) + "%";
+            if (topPercents.indexOf(topPercent) === -1) {
+                topPercents.push(topPercent);
+            }
+        }
+        return topPercents;
+    };
+
     self.scrollToRange = function (range) {
         if (!range) {
             return;

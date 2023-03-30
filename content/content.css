@@ -149,6 +149,24 @@
     background-image: url("icons/exit.png");
 }
 
+#find-lite-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    border-left: 1px solid #ddd;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#find-lite-sidebar .find-lite-sidebar-line {
+    height: 2px;
+    width: 100%;
+    background-color: orange;
+    border: 0;
+    position: absolute;
+}
+
 ::highlight(search-results) {
     background-color: rgb(255 255 11);
 }

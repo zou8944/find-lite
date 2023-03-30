@@ -63,6 +63,9 @@ FindLite.listener = (function () {
         currentIndex = FindLite.page.determineInitialRangeIndex(ranges, selectRange);
         // 根据搜索结果渲染显示内容
         renderHighlight();
+        // 渲染进度条
+        const topPercents = FindLite.page.calVerticalLineTopPercents(ranges);
+        FindLite.panel.showSidebar(topPercents);
 
         if (ranges.length > 0) {
             FindLite.panel.enableNaviButton();
@@ -101,6 +104,7 @@ FindLite.listener = (function () {
     };
 
     self.exitClickListener = async function (event) {
+        FindLite.panel.hideSidebar();
         FindLite.panel.hide();
         clearAllState();
     };

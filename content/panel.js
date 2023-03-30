@@ -12,6 +12,7 @@ FindLite.panel = {
         FindLite.panel.element.previousButton = document.getElementById('find-lite-previous');
         FindLite.panel.element.nextButton = document.getElementById('find-lite-next');
         FindLite.panel.element.exitButton = document.getElementById('find-lite-exit');
+        FindLite.panel.element.sidebar = document.getElementById('find-lite-sidebar');
     },
     appendCSS: async function () {
         function replaceURL(rawCSS, relativeURL) {
@@ -47,6 +48,8 @@ FindLite.panel = {
                 <button id="find-lite-next" title="Next"></button>
                 <button id="find-lite-exit" title="Exit"></button>
             </div>
+            <div id="find-lite-sidebar">
+            </div>
         </div>`;
         const html = document.createElement("div");
         html.innerHTML = rawHTML;
@@ -59,6 +62,19 @@ FindLite.panel = {
     hide: function () {
         FindLite.panel.element.container.classList.remove("show");
         FindLite.panel.element.container.classList.add("hide");
+    },
+    showSidebar: function (topPercents) {
+        for (let topPercent of topPercents) {
+            const line = document.createElement("div");
+            line.className = "find-lite-sidebar-line";
+            line.style.top = topPercent;
+            FindLite.panel.element.sidebar.appendChild(line);
+        }
+        FindLite.panel.element.sidebar.style.removeProperty("display");
+    },
+    hideSidebar: function () {
+        FindLite.panel.element.sidebar.innerHTML = "";
+        FindLite.panel.element.sidebar.style.display = "none";
     },
     focusAndSelect: function (text) {
         FindLite.panel.element.searchField.focus();
