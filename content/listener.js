@@ -20,9 +20,12 @@ FindLite.listener = (function () {
         // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
         if (event.ctrlKey || event.metaKey) {
             if (event.shiftKey && event.key === 'f') {
-                selectRange = window.getSelection().getRangeAt(0);
-                if (selectRange) {
-                    FindLite.panel.focusAndSelect(selectRange.toString());
+                // 如果selection有值，则获取
+                if (window.getSelection().rangeCount > 0) {
+                    selectRange = window.getSelection().getRangeAt(0);
+                    if (selectRange) {
+                        FindLite.panel.focusAndSelect(selectRange.toString());
+                    }
                 }
                 FindLite.panel.setSwitcher(
                     await FindLite.storage.getSensitive(),
@@ -123,6 +126,7 @@ FindLite.listener = (function () {
     function clearAllState() {
         ranges = [];
         currentIndex = 0;
+        selectRange = null;
         FindLite.page.clearAllHighlights();
         FindLite.panel.clearSearchField();
         FindLite.panel.disableNaviButton();
