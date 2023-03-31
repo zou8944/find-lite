@@ -45,6 +45,10 @@ After installation, there is no need for any additional settings. All operations
 > - All search results will be highlighted, but only one result is the current one, and the style will be further highlighted. I call this highlighting focus.
 > - The logic for selecting the first highlighted focus: select the result closest to the center of the viewport, and if there are multiple results, select the one that is closest to the top. If there are no results in the viewport, select the first result.
 
+## Preview
+
+![img.png](doc/preview.en.png)
+
 ## Contribution
 
 If you find a bug, please submit an issue. If you have any good suggestions, please submit a pull request.
