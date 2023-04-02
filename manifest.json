@@ -28,6 +28,10 @@
       ]
     }
   ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Find Lite"
+  },
   "content_scripts": [
     {
       "matches": [

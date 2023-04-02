@@ -1,0 +1,16 @@
+body {
+    font-size: 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    width: 250px;
+}
+
+h1{
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 5px;
+}
