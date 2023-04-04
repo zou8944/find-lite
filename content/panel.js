@@ -80,9 +80,9 @@ FindLite.panel = {
         FindLite.panel.element.sidebar.innerHTML = "";
     },
     focusAndSelect: function (text) {
-        FindLite.panel.element.searchField.focus();
         FindLite.panel.element.searchField.value = text;
         FindLite.panel.element.searchField.select();
+        FindLite.panel.element.searchField.focus();
     },
     clearSearchField: function () {
         FindLite.panel.element.searchIndexText.innerText = "";
