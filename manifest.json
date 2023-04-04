@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Find Lite",
   "description": "Find Lite is a simple extension that allows you to search for text on the current page.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "permissions": [
     "storage",
     "tabs"
