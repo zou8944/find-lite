@@ -19,7 +19,7 @@ FindLite.listener = (function () {
     self.keydownListener = async function (event) {
         // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
         if (event.ctrlKey || event.metaKey) {
-            if (event.shiftKey && event.key === 'f') {
+            if (event.shiftKey && event.key.toLowerCase() === 'f') {
                 // 如果selection有值，则获取
                 if (window.getSelection().rangeCount > 0) {
                     selectRange = window.getSelection().getRangeAt(0);
