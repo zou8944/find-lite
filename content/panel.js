@@ -56,12 +56,17 @@ FindLite.panel = {
         document.body.appendChild(html.children[0]);
     },
     show: function () {
+        FindLite.panel.element.container.style.removeProperty("display");
         FindLite.panel.element.container.classList.remove("hide");
         FindLite.panel.element.container.classList.add("show");
     },
     hide: function () {
         FindLite.panel.element.container.classList.remove("show");
         FindLite.panel.element.container.classList.add("hide");
+        // 需要等待动画走完再消失
+        setTimeout(function (){
+            FindLite.panel.element.container.style.display = "none";
+        }, 300)
     },
     showSidebar: function (topPercents) {
         for (let topPercent of topPercents) {
