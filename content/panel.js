@@ -59,6 +59,7 @@ FindLite.panel = {
         FindLite.panel.element.container.style.removeProperty("display");
         FindLite.panel.element.container.classList.remove("hide");
         FindLite.panel.element.container.classList.add("show");
+        FindLite.panel.element.searchField.focus();
     },
     hide: function () {
         FindLite.panel.element.container.classList.remove("show");
