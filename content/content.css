@@ -2,22 +2,26 @@
     position: fixed;
     top: -100px;
     right: 20px;
-    padding: 10px 10px;
+    padding: 4px 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+    border-radius: 10px;
     /* 背景白色，半透明 */
     background-color: rgba(255, 255, 255, 0.9);
 
-    display: flex;
+    display: flex !important;
     flex-direction: row;
-    justify-content: start;
+    flex-wrap: nowrap;
+    justify-content: space-between;
     z-index: 999999;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
 
     transition: all 0.2s ease-in-out;
 }
 
 #find-lite-container.show {
-    top: 5px;
+    top: 10px;
 }
 
 #find-lite-container.hide {
@@ -25,24 +29,27 @@
 }
 
 #find-lite-search-field-container {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
     color: rgb(84 88 93);
-    display: flex;
+    display: flex !important;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
 #find-lite-search-field-container #find-lite-search-field {
+    padding: 1px 2px;
     border: none;
     outline: none;
     background: none;
+    max-width: 320px;
+    min-width: 80px;
+    height: 32px;
+    margin: 0;
 }
 
 #find-lite-search-field-container #find-lite-search-info {
-    min-width: 3rem;
-    max-width: 6rem;
+    min-width: 48px;
+    max-width: 96px;
     text-align: center;
     margin: 0 5px;
     cursor: default;
@@ -60,12 +67,17 @@
 }
 
 #find-lite-switcher-container button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none !important; /* 取消边框 */
     border-radius: 5px;
     margin: 0 1px; /* 取消外边距 */
     padding: 0; /* 取消内边距 */
-    width: 25px; /* 设置按钮宽度 */
-    height: 25px; /* 设置按钮高度 */
+    min-width: 25px; /* 设置按钮宽度 */
+    max-width: 25px; /* 设置按钮宽度 */
+    min-height: 25px; /* 设置按钮高度 */
+    max-height: 25px; /* 设置按钮高度 */
     outline: none; /* 去掉聚焦时的轮廓线 */
     -webkit-appearance: none; /* 防止浏览器样式的干扰 */
     -moz-appearance: none;
@@ -102,8 +114,10 @@
     border-radius: 50%;
     margin: 0 1px; /* 取消外边距 */
     padding: 0; /* 取消内边距 */
-    width: 25px; /* 设置按钮宽度 */
-    height: 25px; /* 设置按钮高度 */
+    min-width: 25px; /* 设置按钮宽度 */
+    max-width: 25px; /* 设置按钮宽度 */
+    min-height: 25px; /* 设置按钮高度 */
+    max-height: 25px; /* 设置按钮高度 */
     outline: none; /* 去掉聚焦时的轮廓线 */
     -webkit-appearance: none; /* 防止浏览器样式的干扰 */
     -moz-appearance: none;
