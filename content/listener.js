@@ -4,6 +4,7 @@ FindLite.listener = (function () {
     let ranges = [];
     let currentIndex = 0;
     let selectRange = null;
+    let highlightScrollEventElements = []
 
     self.registerAllListeners = function () {
         FindLite.panel.element.searchField.oninput = self.findInputChangeListener;
@@ -125,6 +126,7 @@ FindLite.listener = (function () {
         if (ranges.length > 0) {
             FindLite.page.highlight(ranges);
             FindLite.page.highlightFocused(ranges[currentIndex]);
+            bindHighlightLineScrollEvent();
         }
     }
 
@@ -136,6 +138,33 @@ FindLite.listener = (function () {
         FindLite.panel.clearSearchField();
         FindLite.panel.disableNaviButton();
         FindLite.panel.hideSidebar();
+        unbindHighlightLineScrollEvent();
+    }
+
+    function bindHighlightLineScrollEvent() {
+        window.addEventListener("scroll", updateHighlightLinePosition);
+        let ele = ranges[currentIndex].commonAncestorContainer;
+        while (ele) {
+            if (ele.nodeType === Node.ELEMENT_NODE) {
+                if (ele.scrollHeight > ele.clientHeight || ele.scrollWidth > ele.clientWidth) {
+                    ele.addEventListener("scroll", updateHighlightLinePosition)
+                    highlightScrollEventElements.push(ele);
+                }
+            }
+            ele = ele.parentElement;
+        }
+    }
+
+    function unbindHighlightLineScrollEvent() {
+        window.removeEventListener("scroll", updateHighlightLinePosition)
+        highlightScrollEventElements.forEach(function (element) {
+            element.removeEventListener("scroll", updateHighlightLinePosition)
+        })
+        highlightScrollEventElements = [];
+    }
+
+    function updateHighlightLinePosition() {
+        FindLite.page.updateHighlightLine(ranges[currentIndex]);
     }
 
     return self;

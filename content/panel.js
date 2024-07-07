@@ -13,6 +13,8 @@ FindLite.panel = {
         FindLite.panel.element.nextButton = document.getElementById('find-lite-next');
         FindLite.panel.element.exitButton = document.getElementById('find-lite-exit');
         FindLite.panel.element.sidebar = document.getElementById('find-lite-sidebar');
+        FindLite.panel.element.highlightLineX = document.getElementById("find-lite-highlight-line-x");
+        FindLite.panel.element.highlightLineY = document.getElementById("find-lite-highlight-line-y");
     },
     appendCSS: async function () {
         function replaceURL(rawCSS, relativeURL) {
@@ -53,6 +55,8 @@ FindLite.panel = {
             </div>
             <div id="find-lite-sidebar">
             </div>
+            <div id="find-lite-highlight-line-x"></div>
+            <div id="find-lite-highlight-line-y"></div>
         </div>`;
         const html = document.createElement("div");
         html.innerHTML = rawHTML;

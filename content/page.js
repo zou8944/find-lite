@@ -61,6 +61,9 @@ FindLite.page = (function () {
     };
 
     self.expandRange = function (range) {
+        if (!range) {
+            return
+        }
         // 递归遍历 range 的父节点，如果存在 details 节点，则让其展开
         let parentNode = range.commonAncestorContainer
         while (parentNode) {
@@ -76,43 +79,55 @@ FindLite.page = (function () {
             return;
         }
 
+        const rect = range.getBoundingClientRect();
+        // 如果 rect 已经在视窗内，则不需要滚动
+        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+            return;
+        }
+
         // 如果 rect 的父元素中存在 aside，则先将 aside 移动到视窗内，再将 rect 移动到视窗中间
         let asideNode = range.commonAncestorContainer;
         while (asideNode && asideNode.tagName !== "ASIDE") {
             asideNode = asideNode.parentNode;
         }
         if (asideNode) {
-            console.log(asideNode)
-            asideNode.scrollIntoView({ behavior: 'smooth', block: 'center' })
-
-            const rect = range.getBoundingClientRect();
+            asideNode.scrollIntoView({behavior: 'instant', block: 'center'})
             const asideRect = asideNode.getBoundingClientRect();
-            console.log(rect.top)
-            console.log(asideRect.top)
-            asideNode.scrollBy(0, rect.top - window.innerHeight / 2)
+            asideNode.scrollBy({
+                left: 0,
+                top: rect.top - window.innerHeight / 2,
+                behavior: "instant" // 为了让滚动后马上能够获取到 range 的位置，这里禁用掉动画
+            })
             return;
         }
 
-        // 不在 aside 中的，在整个 window 中移动
-        const rect = range.getBoundingClientRect();
-        if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-            return;
-        }
         // 如果range的下半部分在视窗内，则整个range滚动到视窗
         if (rect.top < 0 && rect.bottom > 0) {
             const yOffset = rect.top;
-            window.scrollBy(0, yOffset - 2);
+            window.scrollBy({
+                left: 0,
+                top: yOffset - 2,
+                behavior: "instant"
+            })
             return;
         }
         // 如果range的上半部分在视窗内，则整个range滚动到视窗
         if (rect.top < window.innerHeight && rect.bottom > window.innerHeight) {
             const yOffset = rect.bottom - window.innerHeight;
-            window.scrollBy(0, yOffset + 2);
+            window.scrollBy({
+                left: 0,
+                top: yOffset + 2,
+                behavior: "instant"
+            })
             return;
         }
         // 否则，滚动到视窗的中心
         const yOffset = -window.innerHeight / 2 + rect.top + rect.height / 2;
-        window.scrollBy(0, yOffset);
+        window.scrollBy({
+            left: 0,
+            top: yOffset,
+            behavior: "instant"
+        })
     };
 
     self.highlight = function (ranges) {
@@ -120,11 +135,28 @@ FindLite.page = (function () {
     };
 
     self.highlightFocused = function (range) {
+        // 高亮
         CSS.highlights.set(FindLite.panel.element.currentFocusHighlightName, new Highlight(range));
+        // 更新定位线位置
+        self.updateHighlightLine(range);
+        // 显示定位线
+        FindLite.panel.element.highlightLineX.style.display = 'block';
+        FindLite.panel.element.highlightLineY.style.display = 'block';
+    };
+
+    self.updateHighlightLine = function (range) {
+        // 不在屏幕内就不需要更新
+        let rect = range.getBoundingClientRect();
+        FindLite.panel.element.highlightLineX.style.top = rect.top + 'px';
+        FindLite.panel.element.highlightLineY.style.left = rect.left + 'px';
     };
 
     self.clearAllHighlights = function () {
+        // 清理高亮
         CSS.highlights.clear();
+        // 隐藏定位线
+        FindLite.panel.element.highlightLineX.style.display = 'none';
+        FindLite.panel.element.highlightLineY.style.display = 'none';
     };
 
     return self;
