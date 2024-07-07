@@ -120,6 +120,7 @@ FindLite.listener = (function () {
 
     function renderHighlight() {
         FindLite.panel.updateIndexText(currentIndex, ranges.length);
+        FindLite.page.expandRange(ranges[currentIndex])
         FindLite.page.scrollToRange(ranges[currentIndex]);
         FindLite.page.clearAllHighlights();
         if (ranges.length > 0) {

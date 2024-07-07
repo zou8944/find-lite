@@ -60,11 +60,40 @@ FindLite.page = (function () {
         return topPercents;
     };
 
+    self.expandRange = function (range) {
+        // 递归遍历 range 的父节点，如果存在 details 节点，则让其展开
+        let parentNode = range.commonAncestorContainer
+        while (parentNode) {
+            if (parentNode.tagName === "DETAILS") {
+                parentNode.open = true;
+            }
+            parentNode = parentNode.parentNode;
+        }
+    }
+
     self.scrollToRange = function (range) {
         if (!range) {
             return;
         }
-        // 如果range已经在视窗内，则不需要滚动
+
+        // 如果 rect 的父元素中存在 aside，则先将 aside 移动到视窗内，再将 rect 移动到视窗中间
+        let asideNode = range.commonAncestorContainer;
+        while (asideNode && asideNode.tagName !== "ASIDE") {
+            asideNode = asideNode.parentNode;
+        }
+        if (asideNode) {
+            console.log(asideNode)
+            asideNode.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+            const rect = range.getBoundingClientRect();
+            const asideRect = asideNode.getBoundingClientRect();
+            console.log(rect.top)
+            console.log(asideRect.top)
+            asideNode.scrollBy(0, rect.top - window.innerHeight / 2)
+            return;
+        }
+
+        // 不在 aside 中的，在整个 window 中移动
         const rect = range.getBoundingClientRect();
         if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
             return;
