@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Find Lite",
   "description": "Find Lite is a simple extension that allows you to search for text on the current page.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "permissions": [
     "storage"
   ],
@@ -17,10 +17,13 @@
       "resources": [
         "content/content.css",
         "icons/exit.png",
-        "icons/up-enable.png",
-        "icons/up-disable.png",
-        "icons/down-enable.png",
-        "icons/down-disable.png"
+        "icons/exit-white.png",
+        "icons/up-light.png",
+        "icons/up-dark.png",
+        "icons/up-white.png",
+        "icons/down-dark.png",
+        "icons/down-light.png",
+        "icons/down-white.png"
       ],
       "matches": [
         "https://*/*",

@@ -1,3 +1,77 @@
+:root {
+    --find-lite-container-color: rgba(255, 255, 255, 0.9);
+
+    --find-lite-search-field-container-color: rgb(84 88 93);
+    --find-lite-search-info-color: rgb(60 60 60);
+
+    --find-lite-switcher-container-button-bg-color: rgb(255 255 255);
+    --find-lite-switcher-container-button-color: rgb(178 184 187);
+    --find-lite-switcher-container-button-hover-bg-color: rgb(215 215 215);
+    --find-lite-switcher-container-button-hover-color: rgb(120 131 137);
+    --find-lite-switcher-container-button-active-bg-color: rgb(215 215 215);
+    --find-lite-switcher-container-button-active-color: rgb(54 167 216);
+    --find-lite-switcher-container-button-disable-bg-color: rgb(255 255 255);
+    --find-lite-switcher-container-button-disable-color: rgb(222 222 222);
+    --find-lite-switcher-container-border-color: rgb(222 222 222);
+
+    --find-lite-search-control-container-button-bg-color: rgb(255 255 255);
+    --find-lite-search-control-container-button-hover-bg-color: rgb(231 231 231);
+    --find-lite-search-control-container-button-disable-bg-color: white;
+
+    --find-lite-search-control-container-previous-disable-bg-image: url("icons/up-light.png");
+    --find-lite-search-control-container-previous-enable-bg-image: url("icons/up-dark.png");
+    --find-lite-search-control-container-next-disable-bg-image: url("icons/down-light.png");
+    --find-lite-search-control-container-next-enable-bg-image: url("icons/down-dark.png");
+    --find-lite-search-control-container-exist-bg-image: url("icons/exit.png");
+
+    --find-lite-sidebar-left-border-color: #ddd;
+    --find-lite-sidebar-bg-color: rgba(255, 255, 255, 0.5);
+    --find-lite-sidebar-line-bg-color: orange;
+
+    --highlight-search-result-bg-color: rgb(255 255 11);
+    --highlight-search-result-color: rgb(2 2 2);
+    --highlight-search-result-focus-bg-color: rgb(253 131 39);
+    --highlight-search-result-focus-color: rgb(2 2 2);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --find-lite-container-color: rgba(19, 19, 19, 0.9);
+
+        --find-lite-search-field-container-color: rgb(222, 222, 222);
+        --find-lite-search-info-color: rgb(222 222 222);
+
+        --find-lite-switcher-container-button-bg-color: rgb(19, 19, 19);
+        --find-lite-switcher-container-button-color: rgb(222 222 222);
+        --find-lite-switcher-container-button-hover-bg-color: rgb(110 110 110);
+        --find-lite-switcher-container-button-hover-color: rgb(222 222 222);
+        --find-lite-switcher-container-button-active-bg-color: rgb(43 74 157);
+        --find-lite-switcher-container-button-active-color: rgb(222 222 222);
+        --find-lite-switcher-container-button-disable-bg-color: rgb(23 24 26);
+        --find-lite-switcher-container-button-disable-color: rgb(120 120 120);
+        --find-lite-switcher-container-border-color: rgb(120 120 120);
+
+        --find-lite-search-control-container-button-bg-color: rgb(80 80 80);
+        --find-lite-search-control-container-button-hover-bg-color: rgb(110 110 110);
+        --find-lite-search-control-container-button-disable-bg-color: rgb(50 50 50);
+
+        --find-lite-search-control-container-previous-disable-bg-image: url("icons/up-light.png");
+        --find-lite-search-control-container-previous-enable-bg-image: url("icons/up-white.png");
+        --find-lite-search-control-container-next-disable-bg-image: url("icons/down-light.png");
+        --find-lite-search-control-container-next-enable-bg-image: url("icons/down-white.png");
+        --find-lite-search-control-container-exist-bg-image: url("icons/exit-white.png");
+
+        --find-lite-sidebar-left-border-color: rgb(80 80 80);
+        --find-lite-sidebar-bg-color: rgba(19, 19, 19, 0.5);
+        --find-lite-sidebar-line-bg-color: orange;
+
+        --highlight-search-result-bg-color: rgb(255 255 11);
+        --highlight-search-result-color: rgb(2 2 2);
+        --highlight-search-result-focus-bg-color: rgb(253 131 39);
+        --highlight-search-result-focus-color: rgb(2 2 2);
+    }
+}
+
 #find-lite-container {
     position: fixed;
     top: -100px;
@@ -6,7 +80,7 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     /* 背景白色，半透明 */
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: var(--find-lite-container-color);
 
     display: flex !important;
     flex-direction: row;
@@ -29,7 +103,7 @@
 }
 
 #find-lite-search-field-container {
-    color: rgb(84 88 93);
+    color: var(--find-lite-search-field-container-color);
     display: flex !important;
     flex-direction: row;
     align-items: center;
@@ -45,6 +119,7 @@
     min-width: 80px;
     height: 32px;
     margin: 0;
+    color: var(--find-lite-search-field-container-color)
 }
 
 #find-lite-search-field-container #find-lite-search-info {
@@ -53,6 +128,7 @@
     text-align: center;
     margin: 0 5px;
     cursor: default;
+    color: var(--find-lite-search-info-color)
 }
 
 #find-lite-switcher-container {
@@ -62,8 +138,8 @@
     cursor: default;
     margin: 0 2px;
     padding: 0 2px;
-    border-left: solid 1px rgb(222 222 222);
-    border-right: solid 1px rgb(222 222 222);
+    border-left: solid 1px var(--find-lite-switcher-container-border-color);
+    border-right: solid 1px var(--find-lite-switcher-container-border-color);
 }
 
 #find-lite-switcher-container button {
@@ -84,23 +160,23 @@
     appearance: none;
     font-weight: bold;
 
-    background-color: rgb(255 255 255);
-    color: rgb(178 184 187) !important;
+    background-color: var(--find-lite-switcher-container-button-bg-color);
+    color: var(--find-lite-switcher-container-button-color) !important;
 }
 
 #find-lite-switcher-container button:hover {
-    background-color: rgb(215 215 215);
-    color: rgb(120 131 137) !important;
+    background-color: var(--find-lite-switcher-container-button-hover-bg-color);
+    color: var(--find-lite-switcher-container-button-hover-color) !important;
 }
 
 #find-lite-switcher-container button.active {
-    background-color: rgb(215 215 215);
-    color: rgb(54 167 216) !important;
+    background-color: var(--find-lite-switcher-container-button-active-bg-color);
+    color: var(--find-lite-switcher-container-button-active-color) !important;
 }
 
 #find-lite-switcher-container button:disabled {
-    background-color: rgb(255 255 255);
-    color: rgb(222 222 222) !important;
+    background-color: var(--find-lite-switcher-container-button-disable-bg-color);
+    color: var(--find-lite-switcher-container-button-disable-color) !important;
 }
 
 #find-lite-search-control-container {
@@ -123,7 +199,7 @@
     -moz-appearance: none;
     appearance: none;
 
-    background-color: rgb(255 255 255);
+    background-color: var(--find-lite-search-control-container-button-bg-color);
 }
 
 #find-lite-search-control-container button {
@@ -133,36 +209,36 @@
 }
 
 #find-lite-search-control-container button:hover {
-    background-color: rgb(231 231 231);
+    background-color: var(--find-lite-search-control-container-button-hover-bg-color);
 }
 
 #find-lite-search-control-container button:disabled {
-    background-color: white;
+    background-color: var(--find-lite-search-control-container-button-disable-bg-color);
 }
 
 #find-lite-search-control-container #find-lite-previous:disabled {
     background-size: 40% 40%;
-    background-image: url("icons/up-disable.png");
+    background-image: var(--find-lite-search-control-container-previous-disable-bg-image);
 }
 
 #find-lite-search-control-container #find-lite-previous:enabled {
     background-size: 40% 40%;
-    background-image: url("icons/up-enable.png");
+    background-image: var(--find-lite-search-control-container-previous-enable-bg-image);
 }
 
 #find-lite-search-control-container #find-lite-next:disabled {
     background-size: 40% 40%;
-    background-image: url("icons/down-disable.png");
+    background-image: var(--find-lite-search-control-container-next-disable-bg-image);
 }
 
 #find-lite-search-control-container #find-lite-next:enabled {
     background-size: 40% 40%;
-    background-image: url("icons/down-enable.png");
+    background-image: var(--find-lite-search-control-container-next-enable-bg-image);
 }
 
 #find-lite-search-control-container #find-lite-exit {
     background-size: 40% 40%;
-    background-image: url("icons/exit.png");
+    background-image: var(--find-lite-search-control-container-exist-bg-image);
 }
 
 #find-lite-sidebar {
@@ -171,22 +247,24 @@
     right: 0;
     width: 5px;
     height: 100%;
-    border-left: 1px solid #ddd;
-    background-color: rgba(255, 255, 255, 0.5);
+    border-left: 1px solid var(--find-lite-sidebar-left-border-color);
+    background-color: var(--find-lite-sidebar-bg-color);
 }
 
 #find-lite-sidebar .find-lite-sidebar-line {
     height: 2px;
     width: 100%;
-    background-color: orange;
+    background-color: var(--find-lite-sidebar-line-bg-color);
     border: 0;
     position: absolute;
 }
 
 ::highlight(search-results) {
-    background-color: rgb(255 255 11);
+    background-color: var(--highlight-search-result-bg-color);
+    color: var(--highlight-search-result-color);
 }
 
 ::highlight(search-results-focus) {
-    background-color: rgb(253 131 39);
+    background-color: var(--highlight-search-result-focus-bg-color);
+    color: var(--highlight-search-result-focus-color);
 }

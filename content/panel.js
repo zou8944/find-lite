@@ -16,15 +16,18 @@ FindLite.panel = {
     },
     appendCSS: async function () {
         function replaceURL(rawCSS, relativeURL) {
-            return rawCSS.replace(relativeURL, chrome.runtime.getURL(relativeURL));
+            return rawCSS.replaceAll(relativeURL, chrome.runtime.getURL(relativeURL));
         }
 
         let rawCSS = await fetch(chrome.runtime.getURL("content/content.css")).then(response => response.text());
-        rawCSS = replaceURL(rawCSS, "icons/up-disable.png");
-        rawCSS = replaceURL(rawCSS, "icons/up-enable.png");
-        rawCSS = replaceURL(rawCSS, "icons/down-disable.png");
-        rawCSS = replaceURL(rawCSS, "icons/down-enable.png");
+        rawCSS = replaceURL(rawCSS, "icons/up-light.png");
+        rawCSS = replaceURL(rawCSS, "icons/up-dark.png");
+        rawCSS = replaceURL(rawCSS, "icons/up-white.png");
+        rawCSS = replaceURL(rawCSS, "icons/down-light.png");
+        rawCSS = replaceURL(rawCSS, "icons/down-dark.png");
+        rawCSS = replaceURL(rawCSS, "icons/down-white.png");
         rawCSS = replaceURL(rawCSS, "icons/exit.png");
+        rawCSS = replaceURL(rawCSS, "icons/exit-white.png");
         const style = document.createElement("style");
         style.innerHTML = rawCSS;
         document.head.appendChild(style);
