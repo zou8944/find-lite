@@ -13,7 +13,8 @@ FindLite.listener = (function () {
         FindLite.panel.element.previousButton.onclick = self.previousClickListener;
         FindLite.panel.element.nextButton.onclick = self.nextClickListener;
         FindLite.panel.element.exitButton.onclick = self.exitClickListener;
-        document.onkeydown = self.keydownListener;
+        // 添加而不是覆盖 keydown 处理器
+        document.addEventListener("keydown", self.keydownListener);
     };
 
     self.keydownListener = async function (event) {
