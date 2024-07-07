@@ -113,7 +113,6 @@ FindLite.listener = (function () {
     };
 
     self.exitClickListener = async function (event) {
-        FindLite.panel.hideSidebar();
         FindLite.panel.hide();
         clearAllState();
     };
@@ -136,6 +135,7 @@ FindLite.listener = (function () {
         FindLite.page.clearAllHighlights();
         FindLite.panel.clearSearchField();
         FindLite.panel.disableNaviButton();
+        FindLite.panel.hideSidebar();
     }
 
     return self;
