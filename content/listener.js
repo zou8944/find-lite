@@ -99,13 +99,17 @@ FindLite.listener = (function () {
     };
 
     self.previousClickListener = async function (event) {
-        currentIndex = (currentIndex - 1 + ranges.length) % ranges.length;
-        renderHighlight();
+        if (ranges.length > 0) {
+            currentIndex = (currentIndex - 1 + ranges.length) % ranges.length;
+            renderHighlight();
+        }
     };
 
     self.nextClickListener = async function (event) {
-        currentIndex = (currentIndex + 1) % ranges.length;
-        renderHighlight();
+        if (ranges.length > 0) {
+            currentIndex = (currentIndex + 1) % ranges.length;
+            renderHighlight();
+        }
     };
 
     self.exitClickListener = async function (event) {
