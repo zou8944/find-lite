@@ -85,15 +85,20 @@ FindLite.page = (function () {
             return;
         }
 
-        // 如果 rect 的父元素中存在 aside，则先将 aside 移动到视窗内，再将 rect 移动到视窗中间
-        let asideNode = range.commonAncestorContainer;
-        while (asideNode && asideNode.tagName !== "ASIDE") {
-            asideNode = asideNode.parentNode;
+        // 如果 rect 的父元素中存在可滚动的元素，则先将 该元素 移动到视窗内，再将 rect 移动到视窗中间
+        let node = range.commonAncestorContainer;
+        while (node) {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                if (node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) {
+                    break
+                }
+            }
+            node = node.parentNode;
         }
-        if (asideNode) {
-            asideNode.scrollIntoView({behavior: 'instant', block: 'center'})
-            const asideRect = asideNode.getBoundingClientRect();
-            asideNode.scrollBy({
+        if (node) {
+            node.scrollIntoView({behavior: 'instant', block: 'center'})
+            const asideRect = node.getBoundingClientRect();
+            node.scrollBy({
                 left: 0,
                 top: rect.top - window.innerHeight / 2,
                 behavior: "instant" // 为了让滚动后马上能够获取到 range 的位置，这里禁用掉动画
