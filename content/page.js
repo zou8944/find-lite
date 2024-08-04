@@ -79,61 +79,89 @@ FindLite.page = (function () {
             return;
         }
 
+        // 获取当前 range 所属 element 节点
+        let rangeNode = range.commonAncestorContainer;
+        while (rangeNode.nodeType !== Node.ELEMENT_NODE) {
+            rangeNode = rangeNode.parentNode;
+        }
+        // 获取当前 range 第一个可滚动父节点
+        let scrollNode = rangeNode;
+        while (scrollNode) {
+            if (scrollNode.scrollHeight > scrollNode.clientHeight || scrollNode.scrollWidth > scrollNode.clientWidth) {
+                break;
+            }
+            scrollNode = scrollNode.parentNode;
+        }
+        // 如果 rect 已经在视窗内，且已经在 scrollNode 的视窗内，则无需滚动
+        let rangeRect = range.getBoundingClientRect();
+        let scrollNodeRect = scrollNode.getBoundingClientRect();
+        const isInView = rangeRect.top >= 0 && rangeRect.bottom <= window.innerHeight;
+        const isInScrollNode = rangeRect.top >= scrollNodeRect.top
+            && rangeRect.bottom <= scrollNodeRect.top + scrollNode.clientHeight
+            && rangeRect.left >= scrollNodeRect.left
+            && rangeRect.right <= scrollNodeRect.left + scrollNode.clientWidth;
+        if (isInView && isInScrollNode) {
+            return;
+        }
+
+        // 将 rangeNode 滚动到视窗范围内
+        rangeNode.scrollIntoView({
+            behavior: 'instant',
+            block: 'center',
+            alignToTop: true
+        });
+
+        // 将 range 滚动到 scrollNode 视窗范围内
+        self.scrollRangeToScrollNode(range, scrollNode);
+
+        // 将 range 滚动到视窗内部
+        self.scrollRangeToView(range);
+    };
+
+    self.scrollRangeToScrollNode = function (range, scrollNode) {
+        let rangeRect = range.getBoundingClientRect();
+        let scrollNodeRect = scrollNode.getBoundingClientRect();
+        let scrollX = 0, scrollY = 0;
+        if (rangeRect.top < scrollNodeRect.top) {
+            scrollY = rangeRect.top - scrollNodeRect.top - scrollNode.clientHeight / 2;
+        }
+        if (rangeRect.bottom > scrollNodeRect.top + scrollNode.clientHeight) {
+            scrollY = rangeRect.bottom - (scrollNodeRect.top + scrollNode.clientHeight) + scrollNode.clientHeight / 2;
+        }
+        if (rangeRect.left < scrollNodeRect.left) {
+            scrollX = rangeRect.left - scrollNodeRect.left - scrollNode.clientWidth / 2;
+        }
+        if (rangeRect.right > scrollNodeRect.left + scrollNode.clientWidth) {
+            scrollX = rangeRect.right - (scrollNodeRect.left + scrollNode.clientWidth) + scrollNode.clientWidth / 2;
+        }
+        scrollNode.scrollBy({
+            left: scrollX,
+            top: scrollY,
+            behavior: "instant"
+        });
+    }
+
+    self.scrollRangeToView = function (range) {
         const rect = range.getBoundingClientRect();
-        // 如果 rect 已经在视窗内，则不需要滚动
         if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
             return;
         }
 
-        // 如果 rect 的父元素中存在可滚动的元素，则先将 该元素 移动到视窗内，再将 rect 移动到视窗中间
-        let node = range.commonAncestorContainer;
-        while (node) {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-                if (node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) {
-                    break
-                }
-            }
-            node = node.parentNode;
-        }
-        if (node) {
-            node.scrollIntoView({behavior: 'instant', block: 'center'})
-            const asideRect = node.getBoundingClientRect();
-            node.scrollBy({
-                left: 0,
-                top: rect.top - window.innerHeight / 2,
-                behavior: "instant" // 为了让滚动后马上能够获取到 range 的位置，这里禁用掉动画
-            })
-            return;
+        let scrollX = 0, scrollY = 0;
+        if (rect.top < 0 && rect.bottom > 0) {
+            scrollY = rect.top - 2;
+        } else if (rect.top < window.innerHeight && rect.bottom > window.innerHeight) {
+            scrollY = rect.bottom - window.innerHeight + 2;
+        } else {
+            scrollY = rect.top + rect.height / 2 - window.innerHeight / 2;
         }
 
-        // 如果range的下半部分在视窗内，则整个range滚动到视窗
-        if (rect.top < 0 && rect.bottom > 0) {
-            const yOffset = rect.top;
-            window.scrollBy({
-                left: 0,
-                top: yOffset - 2,
-                behavior: "instant"
-            })
-            return;
-        }
-        // 如果range的上半部分在视窗内，则整个range滚动到视窗
-        if (rect.top < window.innerHeight && rect.bottom > window.innerHeight) {
-            const yOffset = rect.bottom - window.innerHeight;
-            window.scrollBy({
-                left: 0,
-                top: yOffset + 2,
-                behavior: "instant"
-            })
-            return;
-        }
-        // 否则，滚动到视窗的中心
-        const yOffset = -window.innerHeight / 2 + rect.top + rect.height / 2;
         window.scrollBy({
-            left: 0,
-            top: yOffset,
+            left: scrollX,
+            top: scrollY,
             behavior: "instant"
-        })
-    };
+        });
+    }
 
     self.highlight = function (ranges) {
         CSS.highlights.set("search-results", new Highlight(...ranges));
