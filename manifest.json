@@ -45,6 +45,7 @@
         "app.js",
         "content/errorHandler.js",
         "content/compatibility.js",
+        "content/searchOptimizer.js",
         "content/panel.js",
         "content/page.js",
         "content/finder.js",

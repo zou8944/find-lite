@@ -27,6 +27,9 @@ validate:
 	@test -f app.js || (echo "Error: app.js not found" && exit 1)
 	@test -d content || (echo "Error: content directory not found" && exit 1)
 	@test -d icons || (echo "Error: icons directory not found" && exit 1)
+	@test -f content/searchOptimizer.js || (echo "Error: searchOptimizer.js not found" && exit 1)
+	@test -f content/errorHandler.js || (echo "Error: errorHandler.js not found" && exit 1)
+	@test -f content/compatibility.js || (echo "Error: compatibility.js not found" && exit 1)
 	@echo "Validation passed!"
 
 .PHONY: all package package-dev clean validate

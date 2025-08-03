@@ -86,23 +86,48 @@ FindLite.finder = (function () {
     }
 
     function regexFind(node, ranges, regexPatten, isCaseSensitive) {
-        let match;
-        let regex;
-        try {
-            regex = new RegExp(regexPatten, isCaseSensitive ? 'g' : 'gi');
-        } catch (e) {
-            // 正则表达式错误，通知用户
-            console.warn('Find Lite: Invalid regex pattern:', regexPatten, e.message);
-            return; // 提前返回，避免后续执行
+        // 验证正则表达式
+        const validation = FindLite.searchOptimizer.validateRegex(regexPatten);
+        
+        if (!validation.isValid) {
+            FindLite.errorHandler.handle(
+                FindLite.errorHandler.ErrorTypes.REGEX_ERROR, 
+                new Error(validation.error), 
+                { pattern: regexPatten }
+            );
+            return;
         }
         
-        if (!regex) return; // 额外安全检查
+        if (!validation.isSafe && validation.warnings.length > 0) {
+            console.warn('Find Lite: Potentially unsafe regex pattern:', validation.warnings);
+        }
         
-        while ((match = regex.exec(node.textContent)) !== null) {
-            const range = new Range();
-            range.setStart(node, match.index);
-            range.setEnd(node, match.index + match[0].length);
-            ranges.push(range);
+        try {
+            const flags = isCaseSensitive ? 'g' : 'gi';
+            const matches = FindLite.searchOptimizer.safeRegexSearch(
+                node.textContent, 
+                regexPatten, 
+                flags
+            );
+            
+            for (const match of matches) {
+                const range = new Range();
+                range.setStart(node, match.index);
+                range.setEnd(node, match.index + match[0].length);
+                ranges.push(range);
+                
+                // 检查是否应该停止搜索
+                if (FindLite.searchOptimizer.shouldStopSearch(ranges.length)) {
+                    console.warn('Find Lite: Search stopped due to limits');
+                    break;
+                }
+            }
+        } catch (e) {
+            FindLite.errorHandler.handle(
+                FindLite.errorHandler.ErrorTypes.REGEX_ERROR, 
+                e, 
+                { pattern: regexPatten, node: node }
+            );
         }
     }
 

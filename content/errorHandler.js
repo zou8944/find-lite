@@ -46,13 +46,25 @@ FindLite.errorHandler = (function() {
         // 可以在UI上显示错误提示
         if (FindLite.panel && FindLite.panel.element.searchField) {
             const field = FindLite.panel.element.searchField;
+            const indexText = FindLite.panel.element.searchIndexText;
+            
             field.style.borderColor = '#ff4444';
             field.title = `正则表达式错误: ${error.message}`;
+            
+            // 显示错误信息
+            if (indexText) {
+                indexText.innerText = '正则错误';
+                indexText.style.color = '#ff4444';
+            }
             
             // 3秒后恢复正常样式
             setTimeout(() => {
                 field.style.borderColor = '';
                 field.title = 'Search Field';
+                if (indexText) {
+                    indexText.style.color = '';
+                    indexText.innerText = '';
+                }
             }, 3000);
         }
     };
