@@ -2,19 +2,92 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>使用说明</title>
+    <title>Find Lite</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<h2>使用说明</h2>
-<p>查找框唤起:</p>
-<ul>
-    <li>Mac：Command + Shift + F</li>
-    <li>Windows/Linux：Ctrl + Shift + F</li>
-</ul>
-<p>查找框退出:</p>
-<ul>
-    <li>Esc</li>
-</ul>
+    <div class="popup-container">
+        <!-- 顶部标题栏 -->
+        <header class="popup-header">
+            <div class="header-content">
+                <div class="extension-icon">
+                    <img src="../icons/32.png" alt="Find Lite" width="20" height="20">
+                </div>
+                <h1 class="extension-title">Find Lite</h1>
+            </div>
+        </header>
+        
+        <!-- 主要内容区域 -->
+        <main class="popup-main">
+            <!-- 快捷键设置区域 -->
+            <section class="settings-section">
+                <h2 class="section-title">快捷键设置</h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="shortcut-select">选择快捷键</label>
+                    <select id="shortcut-select" class="form-select">
+                        <option value="ctrl-shift-f">Ctrl+Shift+F (推荐)</option>
+                        <option value="ctrl-alt-f">Ctrl+Alt+F</option>
+                        <option value="alt-shift-f">Alt+Shift+F</option>
+                        <option value="ctrl-shift-g">Ctrl+Shift+G</option>
+                        <option value="ctrl-k">Ctrl+K</option>
+                        <option value="custom">自定义快捷键</option>
+                    </select>
+                </div>
+                
+                <!-- 状态显示 -->
+                <div class="status-container">
+                    <div id="status-indicator" class="status-badge status-unknown">
+                        <span class="status-icon">⏳</span>
+                        <span id="status-text">检测中...</span>
+                    </div>
+                    <button id="test-shortcut" class="btn btn-secondary">测试</button>
+                </div>
+                
+                <!-- 自定义快捷键输入 -->
+                <div id="custom-shortcut" class="custom-shortcut-group" style="display: none;">
+                    <label class="form-label">自定义快捷键</label>
+                    <div class="input-group">
+                        <input type="text" id="custom-input" class="form-input" placeholder="按下您想要的快捷键组合" readonly>
+                        <button id="clear-custom" class="btn btn-tertiary">清除</button>
+                    </div>
+                    <div class="helper-text">按下包含修饰键的组合键，例如 Ctrl+J</div>
+                </div>
+            </section>
+
+            <!-- 当前设置显示 -->
+            <section class="current-settings">
+                <div class="current-shortcut-display">
+                    <span class="shortcut-label">当前快捷键</span>
+                    <code id="current-display" class="shortcut-value">Ctrl+Shift+F</code>
+                </div>
+            </section>
+
+            <!-- 使用指南 -->
+            <section class="help-section">
+                <h2 class="section-title">使用说明</h2>
+                <ul class="instruction-list">
+                    <li>
+                        <kbd class="kbd">快捷键</kbd>
+                        <span>呼出搜索框</span>
+                    </li>
+                    <li>
+                        <kbd class="kbd">Enter</kbd>
+                        <span>下一个结果</span>
+                    </li>
+                    <li>
+                        <kbd class="kbd">Shift</kbd> + <kbd class="kbd">Enter</kbd>
+                        <span>上一个结果</span>
+                    </li>
+                    <li>
+                        <kbd class="kbd">Esc</kbd>
+                        <span>关闭搜索</span>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script src="popup.js"></script>
 </body>
 </html>

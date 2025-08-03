@@ -32,38 +32,28 @@ FindLite.listener = (function () {
         FindLite.panel.element.previousButton.onclick = self.previousClickListener;
         FindLite.panel.element.nextButton.onclick = self.nextClickListener;
         FindLite.panel.element.exitButton.onclick = self.exitClickListener;
+        
+        // 添加消息监听器用于popup通信
+        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            if (message.action === 'ping') {
+                sendResponse({status: 'ok'});
+            }
+        });
+        
         // 添加而不是覆盖 keydown 处理器
         document.addEventListener("keydown", self.keydownListener);
     };
 
     self.keydownListener = async function (event) {
-        // Ctrl+Shift+F 或 Command+Shift+F 呼出搜索框
-        if (event.ctrlKey || event.metaKey) {
-            if (event.shiftKey && event.key.toLowerCase() === 'f') {
-                // 如果selection有值，则获取
-                if (window.getSelection().rangeCount > 0) {
-                    selectRange = window.getSelection().getRangeAt(0);
-                    if (selectRange) {
-                        FindLite.panel.focusAndSelect(selectRange.toString());
-                    }
-                }
-                FindLite.panel.setSwitcher(
-                    await FindLite.storage.getSensitive(),
-                    await FindLite.storage.getWholeWord(),
-                    await FindLite.storage.getRegex()
-                );
-                FindLite.panel.show();
-                // 使用防抖搜索
-                if (!debouncedSearch) {
-                    const isRegex = FindLite.panel.isRegex();
-                    const delay = FindLite.searchOptimizer.getDebounceDelay(isRegex);
-                    debouncedSearch = FindLite.searchOptimizer.debounce(self.performSearch, delay);
-                }
-                debouncedSearch(event);
-            }
+        // 动态检测快捷键
+        if (await self.isActivationShortcut(event)) {
+            event.preventDefault();
+            await self.activateSearch();
+            return;
         }
+        
         // ESC 清空并隐藏搜索框
-        else if (event.keyCode === 27) {
+        if (event.keyCode === 27) {
             await self.exitClickListener(event);
         }
         // Shift+Enter 上一个
@@ -74,6 +64,71 @@ FindLite.listener = (function () {
         else if (event.keyCode === 13) {
             await self.nextClickListener(event);
         }
+    };
+
+    // 检查是否为激活快捷键
+    self.isActivationShortcut = async function(event) {
+        try {
+            const settings = await chrome.storage.local.get(['shortcutKey', 'customShortcut']);
+            const shortcutKey = settings.shortcutKey || 'ctrl-shift-f';
+            const customShortcut = settings.customShortcut;
+            
+            // 如果设置了自定义快捷键，优先使用自定义快捷键
+            if (shortcutKey === 'custom' && customShortcut) {
+                return self.matchesShortcut(event, customShortcut.keys);
+            }
+            
+            // 使用预设快捷键
+            const shortcuts = {
+                'ctrl-shift-f': { ctrl: true, shift: true, key: 'f' },
+                'ctrl-alt-f': { ctrl: true, alt: true, key: 'f' },
+                'alt-shift-f': { alt: true, shift: true, key: 'f' },
+                'ctrl-shift-g': { ctrl: true, shift: true, key: 'g' },
+                'ctrl-k': { ctrl: true, key: 'k' }
+            };
+            
+            const targetShortcut = shortcuts[shortcutKey];
+            return targetShortcut && self.matchesShortcut(event, targetShortcut);
+            
+        } catch (error) {
+            console.warn('Find Lite: 检查快捷键失败，使用默认', error);
+            // 出错时使用默认快捷键
+            return (event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'f';
+        }
+    };
+
+    // 匹配快捷键组合
+    self.matchesShortcut = function(event, shortcut) {
+        const ctrlMatch = shortcut.ctrl ? (event.ctrlKey || event.metaKey) : (!event.ctrlKey && !event.metaKey);
+        const altMatch = shortcut.alt ? event.altKey : !event.altKey;
+        const shiftMatch = shortcut.shift ? event.shiftKey : !event.shiftKey;
+        const keyMatch = event.key.toLowerCase() === shortcut.key.toLowerCase();
+        
+        return ctrlMatch && altMatch && shiftMatch && keyMatch;
+    };
+
+    // 激活搜索功能
+    self.activateSearch = async function() {
+        // 如果selection有值，则获取
+        if (window.getSelection().rangeCount > 0) {
+            selectRange = window.getSelection().getRangeAt(0);
+            if (selectRange) {
+                FindLite.panel.focusAndSelect(selectRange.toString());
+            }
+        }
+        FindLite.panel.setSwitcher(
+            await FindLite.storage.getSensitive(),
+            await FindLite.storage.getWholeWord(),
+            await FindLite.storage.getRegex()
+        );
+        FindLite.panel.show();
+        // 使用防抖搜索
+        if (!debouncedSearch) {
+            const isRegex = FindLite.panel.isRegex();
+            const delay = FindLite.searchOptimizer.getDebounceDelay(isRegex);
+            debouncedSearch = FindLite.searchOptimizer.debounce(self.performSearch, delay);
+        }
+        debouncedSearch({});
     };
 
     // 新的执行搜索函数，替代原来的 findInputChangeListener
