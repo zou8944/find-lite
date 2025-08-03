@@ -2,8 +2,8 @@ FindLite.searchOptimizer = (function() {
     const self = {};
     
     // 防抖配置
-    const DEBOUNCE_DELAY = 300; // 毫秒
-    const REGEX_DEBOUNCE_DELAY = 500; // 正则表达式防抖延迟更长
+    const DEBOUNCE_DELAY = 100; // 毫秒
+    const REGEX_DEBOUNCE_DELAY = 300; // 正则表达式防抖延迟更长
     
     // 搜索限制配置
     const MAX_SEARCH_TIME = 2000; // 最大搜索时间 2秒

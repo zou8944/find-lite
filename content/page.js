@@ -92,6 +92,12 @@ FindLite.page = (function () {
             }
             scrollNode = scrollNode.parentNode;
         }
+        
+        // 如果没有找到可滚动的父节点，使用 document.documentElement 作为默认值
+        if (!scrollNode) {
+            scrollNode = document.documentElement || document.body;
+        }
+        
         // 如果 rect 已经在视窗内，且已经在 scrollNode 的视窗内，则无需滚动
         let rangeRect = range.getBoundingClientRect();
         let scrollNodeRect = scrollNode.getBoundingClientRect();
@@ -119,6 +125,10 @@ FindLite.page = (function () {
     };
 
     self.scrollRangeToScrollNode = function (range, scrollNode) {
+        if (!scrollNode || !range) {
+            return;
+        }
+        
         let rangeRect = range.getBoundingClientRect();
         let scrollNodeRect = scrollNode.getBoundingClientRect();
         let scrollX = 0, scrollY = 0;
