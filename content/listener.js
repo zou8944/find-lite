@@ -239,10 +239,10 @@ FindLite.listener = (function () {
 
     function renderHighlight() {
         FindLite.panel.updateIndexText(currentIndex, ranges.length);
-        FindLite.page.expandRange(ranges[currentIndex])
-        FindLite.page.scrollToRange(ranges[currentIndex]);
         FindLite.page.clearAllHighlights();
-        if (ranges.length > 0) {
+        if (ranges.length > 0 && ranges[currentIndex]) {
+            FindLite.page.expandRange(ranges[currentIndex]);
+            FindLite.page.scrollToRange(ranges[currentIndex]);
             FindLite.page.highlight(ranges);
             FindLite.page.highlightFocused(ranges[currentIndex]);
             bindHighlightLineScrollEvent();
@@ -283,7 +283,9 @@ FindLite.listener = (function () {
     }
 
     function updateHighlightLinePosition() {
-        FindLite.page.updateHighlightLine(ranges[currentIndex]);
+        if (ranges.length > 0 && ranges[currentIndex]) {
+            FindLite.page.updateHighlightLine(ranges[currentIndex]);
+        }
     }
     
     // 显示搜索进行中状态

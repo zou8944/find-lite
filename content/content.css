@@ -72,192 +72,301 @@
     }
 }
 
-#find-lite-container {
-    position: fixed;
-    top: -100px;
-    right: 20px;
-    padding: 4px 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    /* 背景白色，半透明 */
-    background-color: var(--find-lite-container-color);
+/* 重置所有Find Lite相关元素，防止宿主页面CSS干扰 */
+html body #find-lite-container,
+html body #find-lite-container *,
+html body #find-lite-sidebar,
+html body #find-lite-sidebar * {
+    /* all: unset !important; */
+    box-sizing: border-box !important;
+}
+
+/* 主容器样式 */
+html body #find-lite-container {
+    position: fixed !important;
+    top: -100px !important;
+    right: 20px !important;
+    padding: 4px 10px !important;
+    margin: 0 !important;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    background-color: var(--find-lite-container-color) !important;
 
     display: flex !important;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    z-index: 999999;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    z-index: 999999 !important;
 
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    height: 35px;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    line-height: normal !important;
+    height: 35px !important;
+    width: auto !important;
+    min-height: 35px !important;
+    max-height: 35px !important;
 
-    transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-#find-lite-container.show {
-    top: 10px;
+html body #find-lite-container.show {
+    top: 10px !important;
 }
 
-#find-lite-container.hide {
-    top: -100px;
+html body #find-lite-container.hide {
+    top: -100px !important;
 }
 
-#find-lite-search-field-container {
-    color: var(--find-lite-search-field-container-color);
+html body #find-lite-search-field-container {
+    color: var(--find-lite-search-field-container-color) !important;
     display: flex !important;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
 }
 
-#find-lite-search-field-container #find-lite-search-field {
-    padding: 1px 2px;
-    border: none;
-    outline: none;
-    background: none;
-    max-width: 320px;
-    min-width: 80px;
-    height: 32px;
-    margin: 0;
-    color: var(--find-lite-search-field-container-color)
+html body #find-lite-search-field-container #find-lite-search-field {
+    padding: 1px 2px !important;
+    margin: 0 !important;
+    border: none !important;
+    outline: none !important;
+    background: none !important;
+    max-width: 320px !important;
+    min-width: 80px !important;
+    width: auto !important;
+    height: 32px !important;
+    color: var(--find-lite-search-field-container-color) !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    line-height: normal !important;
+    text-align: left !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    white-space: normal !important;
+    vertical-align: baseline !important;
+    resize: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
 }
 
-#find-lite-search-field-container #find-lite-search-info {
-    min-width: 48px;
-    max-width: 96px;
-    text-align: center;
-    margin: 0 5px;
-    cursor: default;
-    color: var(--find-lite-search-info-color)
+html body #find-lite-search-field-container #find-lite-search-info {
+    min-width: 48px !important;
+    max-width: 96px !important;
+    width: auto !important;
+    height: auto !important;
+    text-align: center !important;
+    margin: 0 5px !important;
+    padding: 0 !important;
+    cursor: default !important;
+    color: var(--find-lite-search-info-color) !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: normal !important;
+    line-height: normal !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    display: block !important;
 }
 
-#find-lite-switcher-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: default;
-    margin: 0 2px;
-    padding: 0 2px;
-    border-left: solid 1px var(--find-lite-switcher-container-border-color);
-    border-right: solid 1px var(--find-lite-switcher-container-border-color);
+html body #find-lite-switcher-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: default !important;
+    margin: 0 2px !important;
+    padding: 0 2px !important;
+    border-left: solid 1px var(--find-lite-switcher-container-border-color) !important;
+    border-right: solid 1px var(--find-lite-switcher-container-border-color) !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
 }
 
-#find-lite-switcher-container button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none !important; /* 取消边框 */
-    border-radius: 5px;
-    margin: 0 1px; /* 取消外边距 */
-    padding: 0; /* 取消内边距 */
-    min-width: 25px; /* 设置按钮宽度 */
-    max-width: 25px; /* 设置按钮宽度 */
-    min-height: 25px; /* 设置按钮高度 */
-    max-height: 25px; /* 设置按钮高度 */
-    outline: none; /* 去掉聚焦时的轮廓线 */
-    -webkit-appearance: none; /* 防止浏览器样式的干扰 */
-    -moz-appearance: none;
-    appearance: none;
-    font-weight: bold;
+html body #find-lite-switcher-container button {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: none !important;
+    border-radius: 5px !important;
+    margin: 0 1px !important;
+    padding: 0 !important;
+    min-width: 25px !important;
+    max-width: 25px !important;
+    width: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+    height: 25px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    font-weight: bold !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: normal !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: all 0.1s ease !important;
 
-    background-color: var(--find-lite-switcher-container-button-bg-color);
+    background-color: var(--find-lite-switcher-container-button-bg-color) !important;
     color: var(--find-lite-switcher-container-button-color) !important;
 }
 
-#find-lite-switcher-container button:hover {
-    background-color: var(--find-lite-switcher-container-button-hover-bg-color);
+html body #find-lite-switcher-container button:hover {
+    background-color: var(--find-lite-switcher-container-button-hover-bg-color) !important;
     color: var(--find-lite-switcher-container-button-hover-color) !important;
 }
 
-#find-lite-switcher-container button.active {
-    background-color: var(--find-lite-switcher-container-button-active-bg-color);
+html body #find-lite-switcher-container button.active {
+    background-color: var(--find-lite-switcher-container-button-active-bg-color) !important;
     color: var(--find-lite-switcher-container-button-active-color) !important;
 }
 
-#find-lite-switcher-container button:disabled {
-    background-color: var(--find-lite-switcher-container-button-disable-bg-color);
+html body #find-lite-switcher-container button:disabled {
+    background-color: var(--find-lite-switcher-container-button-disable-bg-color) !important;
     color: var(--find-lite-switcher-container-button-disable-color) !important;
+    cursor: not-allowed !important;
 }
 
-#find-lite-search-control-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+html body #find-lite-search-control-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
 }
 
-#find-lite-search-control-container button {
-    border: none !important; /* 取消边框 */
-    border-radius: 50%;
-    margin: 0 1px; /* 取消外边距 */
-    padding: 0; /* 取消内边距 */
-    min-width: 25px; /* 设置按钮宽度 */
-    max-width: 25px; /* 设置按钮宽度 */
-    min-height: 25px; /* 设置按钮高度 */
-    max-height: 25px; /* 设置按钮高度 */
-    outline: none; /* 去掉聚焦时的轮廓线 */
-    -webkit-appearance: none; /* 防止浏览器样式的干扰 */
-    -moz-appearance: none;
-    appearance: none;
+html body #find-lite-search-control-container button {
+    border: none !important;
+    border-radius: 50% !important;
+    margin: 0 1px !important;
+    padding: 0 !important;
+    min-width: 25px !important;
+    max-width: 25px !important;
+    width: 25px !important;
+    min-height: 25px !important;
+    max-height: 25px !important;
+    height: 25px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    cursor: pointer !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    line-height: normal !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: all 0.1s ease !important;
 
-    background-color: var(--find-lite-search-control-container-button-bg-color);
+    background-color: var(--find-lite-search-control-container-button-bg-color) !important;
+    background-repeat: no-repeat !important;
+    background-size: 50% 50% !important;
+    background-position: center center !important;
 }
 
-#find-lite-search-control-container button {
-    background-repeat: no-repeat;
-    background-size: 50% 50%;
-    background-position: center center;
+html body #find-lite-search-control-container button:hover {
+    background-color: var(--find-lite-search-control-container-button-hover-bg-color) !important;
 }
 
-#find-lite-search-control-container button:hover {
-    background-color: var(--find-lite-search-control-container-button-hover-bg-color);
+html body #find-lite-search-control-container button:disabled {
+    background-color: var(--find-lite-search-control-container-button-disable-bg-color) !important;
+    cursor: not-allowed !important;
 }
 
-#find-lite-search-control-container button:disabled {
-    background-color: var(--find-lite-search-control-container-button-disable-bg-color);
+html body #find-lite-search-control-container #find-lite-previous:disabled {
+    background-size: 40% 40% !important;
+    background-image: var(--find-lite-search-control-container-previous-disable-bg-image) !important;
 }
 
-#find-lite-search-control-container #find-lite-previous:disabled {
-    background-size: 40% 40%;
-    background-image: var(--find-lite-search-control-container-previous-disable-bg-image);
+html body #find-lite-search-control-container #find-lite-previous:enabled {
+    background-size: 40% 40% !important;
+    background-image: var(--find-lite-search-control-container-previous-enable-bg-image) !important;
 }
 
-#find-lite-search-control-container #find-lite-previous:enabled {
-    background-size: 40% 40%;
-    background-image: var(--find-lite-search-control-container-previous-enable-bg-image);
+html body #find-lite-search-control-container #find-lite-next:disabled {
+    background-size: 40% 40% !important;
+    background-image: var(--find-lite-search-control-container-next-disable-bg-image) !important;
 }
 
-#find-lite-search-control-container #find-lite-next:disabled {
-    background-size: 40% 40%;
-    background-image: var(--find-lite-search-control-container-next-disable-bg-image);
+html body #find-lite-search-control-container #find-lite-next:enabled {
+    background-size: 40% 40% !important;
+    background-image: var(--find-lite-search-control-container-next-enable-bg-image) !important;
 }
 
-#find-lite-search-control-container #find-lite-next:enabled {
-    background-size: 40% 40%;
-    background-image: var(--find-lite-search-control-container-next-enable-bg-image);
+html body #find-lite-search-control-container #find-lite-exit {
+    background-size: 40% 40% !important;
+    background-image: var(--find-lite-search-control-container-exist-bg-image) !important;
 }
 
-#find-lite-search-control-container #find-lite-exit {
-    background-size: 40% 40%;
-    background-image: var(--find-lite-search-control-container-exist-bg-image);
+html body #find-lite-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    width: 5px !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-left: 1px solid var(--find-lite-sidebar-left-border-color) !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    background-color: var(--find-lite-sidebar-bg-color) !important;
+    z-index: 999998 !important;
+    display: block !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-#find-lite-sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 5px;
-    height: 100%;
-    border-left: 1px solid var(--find-lite-sidebar-left-border-color);
-    background-color: var(--find-lite-sidebar-bg-color);
-}
-
-#find-lite-sidebar .find-lite-sidebar-line {
-    height: 2px;
-    width: 100%;
-    background-color: var(--find-lite-sidebar-line-bg-color);
-    border: 0;
-    position: absolute;
+html body #find-lite-sidebar .find-lite-sidebar-line {
+    height: 2px !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--find-lite-sidebar-line-bg-color) !important;
+    border: 0 !important;
+    position: absolute !important;
+    display: block !important;
+    box-shadow: none !important;
+    transform: none !important;
 }
 
 ::highlight(search-results) {
@@ -270,7 +379,7 @@
     color: var(--highlight-search-result-focus-color);
 }
 
-#find-lite-highlight-line-x {
+html body #find-lite-highlight-line-x {
     display: none;
     position: fixed;
     top: 200px;
@@ -286,7 +395,7 @@
     border-bottom: 0;
 }
 
-#find-lite-highlight-line-y {
+html body #find-lite-highlight-line-y {
     display: none;
     position: fixed;
     top: 0;
