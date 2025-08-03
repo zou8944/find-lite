@@ -91,8 +91,13 @@ FindLite.finder = (function () {
         try {
             regex = new RegExp(regexPatten, isCaseSensitive ? 'g' : 'gi');
         } catch (e) {
-            // 正则表达式错误，不进行匹配
+            // 正则表达式错误，通知用户
+            console.warn('Find Lite: Invalid regex pattern:', regexPatten, e.message);
+            return; // 提前返回，避免后续执行
         }
+        
+        if (!regex) return; // 额外安全检查
+        
         while ((match = regex.exec(node.textContent)) !== null) {
             const range = new Range();
             range.setStart(node, match.index);
